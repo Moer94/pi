@@ -1,0 +1,77 @@
+apiVersion: kubeflow.org/v1
+kind: MPIJob
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"kubeflow.org/v2beta1","kind":"MPIJob","metadata":{"annotations":{},"name":"pi","namespace":"default"},"spec":{"mpiReplicaSpecs":{"Launcher":{"replicas":1,"template":{"spec":{"containers":[{"args":["-n","2","/home/mpiuser/pi"],"command":["mpirun"],"image":"mpioperator/mpi-pi","name":"mpi-launcher","resources":{"limits":{"cpu":1,"memory":"1Gi"}},"securityContext":{"runAsUser":1000}}]}}},"Worker":{"replicas":2,"template":{"spec":{"containers":[{"args":["-De","-f","/home/mpiuser/.sshd_config"],"command":["/usr/sbin/sshd"],"image":"mpioperator/mpi-pi","name":"mpi-worker","resources":{"limits":{"cpu":1,"memory":"1Gi"}},"securityContext":{"runAsUser":1000}}]}}}},"runPolicy":{"cleanPodPolicy":"Running","ttlSecondsAfterFinished":60},"slotsPerWorker":1,"sshAuthMountPath":"/home/mpiuser/.ssh"}}
+  creationTimestamp: "2022-06-14T12:57:31Z"
+  generation: 1
+  name: pi
+  namespace: default
+  resourceVersion: "11059750"
+  uid: ac82c404-a806-47ed-b905-c41f6676ab6e
+spec:
+  mpiReplicaSpecs:
+    Launcher:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - args:
+            - -n
+            - "2"
+            - /home/mpiuser/pi
+            command:
+            - mpirun
+            image: mpioperator/mpi-pi
+            name: mpi-launcher
+            resources:
+              limits:
+                cpu: 1
+                memory: 1Gi
+            securityContext:
+              runAsUser: 1000
+    Worker:
+      replicas: 2
+      template:
+        spec:
+          containers:
+          - args:
+            - -De
+            - -f
+            - /home/mpiuser/.sshd_config
+            command:
+            - /usr/sbin/sshd
+            image: mpioperator/mpi-pi
+            name: mpi-worker
+            resources:
+              limits:
+                cpu: 1
+                memory: 1Gi
+            securityContext:
+              runAsUser: 1000
+  runPolicy:
+    cleanPodPolicy: Running
+    ttlSecondsAfterFinished: 60
+  slotsPerWorker: 1
+  sshAuthMountPath: /home/mpiuser/.ssh
+status:
+  conditions:
+  - lastTransitionTime: "2022-06-14T12:57:31Z"
+    lastUpdateTime: "2022-06-14T12:57:31Z"
+    message: MPIJob default/pi is created.
+    reason: MPIJobCreated
+    status: "True"
+    type: Created
+  - lastTransitionTime: "2022-06-14T12:57:36Z"
+    lastUpdateTime: "2022-06-14T12:57:36Z"
+    message: MPIJob default/pi is running.
+    reason: MPIJobRunning
+    status: "True"
+    type: Running
+  replicaStatuses:
+    Launcher:
+      active: 1
+    Worker:
+      active: 2
+  startTime: "2022-06-14T12:57:31Z"
